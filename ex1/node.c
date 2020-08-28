@@ -2,7 +2,7 @@
 * Lab 1 Exercise 1
 * Name: Darien Chong
 * Student No: A0168214H
-* Lab Group:
+* Lab Group: 6
 *************************************/
 
 #include <stdio.h>
