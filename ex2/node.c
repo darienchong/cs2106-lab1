@@ -199,33 +199,8 @@ void insert_node_from_tail_at(list *lst, int index, int data)
 	if (debug) {
 		printf("  [insert_node_from_tail_at(lst, %d, %d)]: Entered successfully.\n", index, data);
 	}
-	struct NODE *ptr_new_node = create_new_node(data, NULL, NULL);
-	int list_length = length(lst);
 
-	// Handle any corner cases first
-	if (lst -> tail == NULL) {
-		lst -> head = ptr_new_node;
-		lst -> tail = ptr_new_node;
-		return;
-	}
-	
-	// This means we append to the tail
-	if (index == 0) {
-		if (debug) {
-			printf("  [insert_node_from_tail_at(lst, %d, %d)]: Entering `index == 0` case.\n", index, data);
-		}
-
-		free(ptr_new_node);
-		
-		if (debug) {
-			printf("  [insert_node_from_tail_at(lst, %d, %d)]: Successfully freed new node.\n", index, data);
-		}
-
-		insert_node_from_head_at(lst, list_length, data);
-		return;
-	}
-
-	insert_node_from_head_at(lst, list_length - index, data);
+	insert_node_from_head_at(lst, length(lst) - index, data);
 	return;
 }
 
