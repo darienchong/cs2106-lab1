@@ -22,7 +22,7 @@ bool debug = false;
 int length(list *lst)
 {
 	if (debug) {
-		printf("  [length(lst)]: Entered successfully.\n");
+		printf("  * [length(lst)]: Entered successfully.\n");
 	}
 	
 	if (lst -> head == NULL) {
@@ -38,7 +38,7 @@ int length(list *lst)
 	}
 	
 	if (debug) {
-		printf("  [length(lst)]: Returning a value of [%d].\n", length_recorded);
+		printf("  * [length(lst)]: Returning a value of [%d].\n", length_recorded);
 	}
 
 	return length_recorded;
@@ -49,7 +49,7 @@ int length(list *lst)
 struct NODE* get_node_from_head_at(list *lst, int index) 
 {
 	if (debug) {
-		printf("  [get_node_from_head_at(lst, %d)]: Entered successfully.\n", index);
+		printf("  * [get_node_from_head_at(lst, %d)]: Entered successfully.\n", index);
 	}
 
 	if (index == 0) {
@@ -58,17 +58,21 @@ struct NODE* get_node_from_head_at(list *lst, int index)
 
 	int current_index = index;
 	struct NODE *ptr_current_node = lst -> head;
+
 	while (current_index > 0) {
 		if (ptr_current_node == NULL) {
 			if (debug) {
-				printf("  [get_node_from_head_at(lst, %d)]: Attempted to retrieve node at index %d from list of length %d\n", index, index, length(lst));
+				printf("  * [get_node_from_head_at(lst, %d)]: Attempted to retrieve node at index %d from list of length %d\n", index, index, length(lst));
 			}
 			return NULL; 
 		}
 		ptr_current_node = ptr_current_node -> next;
 		current_index -= 1;
 	}
-
+	
+	if (debug) {
+		printf("  * [get_node_from_head_at(lst, %d)]: Exiting.\n", index);
+	}
 	return ptr_current_node;
 }
 
@@ -79,11 +83,16 @@ struct NODE* get_node_from_head_at(list *lst, int index)
 void insert_node_between(list *lst, struct NODE *ptr_node, struct NODE *ptr_prev, struct NODE *ptr_next)
 {
 	if (debug) {
-		printf("  [insert_node_between(...)]: Entered successfully.\n");
+		printf("  * [insert_node_between(...)]: Entered successfully.\n");
 	}
 
 	bool is_insertion_at_head = (ptr_prev == NULL);
 	bool is_insertion_at_tail = (ptr_next == NULL);
+	
+	if (debug) {
+		printf("  * [insert_node_between(...)]: ptr_prev == NULL: %d\n", is_insertion_at_head);
+		printf("  * [insert_node_between(...)]: ptr_next == NULL: %d\n", is_insertion_at_tail);
+	}
 
 	// Insertion at head
 	// Assumes that `next` == `lst -> head`
@@ -101,20 +110,37 @@ void insert_node_between(list *lst, struct NODE *ptr_node, struct NODE *ptr_prev
 	ptr_node -> prev = ptr_prev;
 	ptr_node -> next = ptr_next;
 	
+	if (debug) {
+		printf("  * [insert_node_between(...)]: Successfully assigned ptr_node -> prev, next.\n");
+	}
+	
 	if (!is_insertion_at_tail) {
 		ptr_next -> prev = ptr_node;
+		
+		if (debug) {
+			printf("  * [insert_node_between(...)]: Successfully assigned ptr_next -> prev.\n");
+		}
 	}
 
 	if (!is_insertion_at_head) {
 		ptr_prev -> next = ptr_node;
+		
+		if (debug) {
+			printf("  * [insert_node_between(...)]: Successfully assigned ptr_prev -> next.\n");
+		}
 	}
+	
+	if (debug) {
+		printf("  * [insert_node_between(...)]: Exiting.\n");
+	}
+
 	return;
 }
 
 // Creates a new node and allocates memory for it.
 struct NODE* create_new_node(int data, struct NODE *prev, struct NODE *next) {
 	if (debug) {
-		printf("  [create_new_node(%d, prev, next)]: Entered successfully.\n", data);
+		printf("  * [create_new_node(%d, prev, next)]: Entered successfully.\n", data);
 	}
 
 	struct NODE *new_node = malloc(sizeof(struct NODE));
@@ -143,13 +169,26 @@ void insert_node_from_head_at(list *lst, int index, int data)
 	}
 
 	if (index == 0) {
+		if (debug) {
+			printf("  [insert_node_from_head_at(lst, %d, %d)]: Entered `index == 0` case.\n", index, data);
+		}
+	
 		insert_node_between(lst, ptr_new_node, NULL, lst -> head);
+		
+		if (debug) {
+			printf("  [insert_node_from_head_at(lst, %d, %d)]: Exiting `index == 0` case.\n", index, data);
+		}
 		return;
 	}
 
 	struct NODE *ptr_prev_node = get_node_from_head_at(lst, index - 1);
 	struct NODE *ptr_next_node = ptr_prev_node -> next;
-        insert_node_between(lst, ptr_new_node, ptr_prev_node, ptr_next_node);	
+
+	insert_node_between(lst, ptr_new_node, ptr_prev_node, ptr_next_node);	
+	
+	if (debug) {
+		printf("  [insert_node_from_head_at(lst, %d, %d)]: Exiting.\n", index, data);
+	}
 	return;
 }
 

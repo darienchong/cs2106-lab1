@@ -11,7 +11,7 @@
 #ifndef FUNCTION_POINTERS_H
 #define FUNCTION_POINTERS_H
 
-extern int (*func_list[]) (int);
+extern int (*func_list[5])(int);
 
 void update_functions();
 
